@@ -138,14 +138,15 @@ function dibujarAhorcado(intento) {
 
 // Clase que maneja la lógica del juego del Ahorcado
 class Ahorcado {
-    constructor(palabra, intentos) {
-        this.palabra = palabra; // La palabra a adivinar
-        this.intentos = intentos; // Cantidad de intentos disponibles
-        this.letrasAdivinadas = []; // Letras adivinadas correctamente
-        this.letrasIncorrectas = []; // Letras incorrectas
-        this.estado = 'jugando'; // Estado actual del juego
-    }
-  
+  constructor(palabra, intentos) {
+      this.palabra = palabra;
+      this.intentos = intentos;
+      this.letrasAdivinadas = [];
+      this.letrasIncorrectas = [];
+      this.estado = 'jugando';
+      this.actualizarPalabraMostrada(); // Muestra los guiones iniciales
+      document.getElementById('intentos').textContent = this.intentos; // Muestra los intentos iniciales
+  }
     // Método para verificar si la letra es correcta
     verificarLetra(letra) {
         if (this.estado !== 'jugando') {
@@ -154,10 +155,8 @@ class Ahorcado {
   
         // Comprobar si la letra ya ha sido adivinada
         if (this.letrasAdivinadas.includes(letra) || this.letrasIncorrectas.includes(letra)) {
-            console.log(`Ya has intentado la letra "${letra}". No pierdes un intento.`);
             return; // Salir de la función si la letra ya fue adivinada
         }
-  
         // Verificar si la letra está en la palabra
         if (this.palabra.includes(letra)) {
             this.letrasAdivinadas.push(letra); // Agrega a letras correctas
@@ -210,7 +209,7 @@ class Ahorcado {
   }
   
   // Inicializa el juego con la palabra "java" y 10 intentos
-  const juego = new Ahorcado('java', 10);
+  const juego = new Ahorcado('cipote', 10);
   // Muestra los intentos iniciales y la palabra oculta en el HTML
   let iniciar = document.querySelector('#empezar');  
   
@@ -220,17 +219,17 @@ class Ahorcado {
     juego.letrasAdivinadas = [];
     juego.letrasIncorrectas = [];
     juego.estado = 'jugando';
-    document.getElementById('intentos').textContent = juego.intentos;
-    juego.actualizarPalabraMostrada();
+    document.getElementById('intentos').textContent = juego.intentos; // Muestra los intentos actualizados
     document.getElementById('mensaje').textContent = '';
+
+    // Actualiza el canvas y la palabra mostrada desde el inicio
     dibujarAhorcado(juego.intentos);
-  }
-  
+    juego.actualizarPalabraMostrada(); // Aquí se muestra la cantidad de letras con guiones
+}
   // Configura el botón de iniciar para empezar el juego
   document.getElementById('empezar').addEventListener('click', () => {
     empezar();
   });
-  
   // Agrega un evento al botón para procesar la letra ingresada
   document.getElementById('enviarLetra').addEventListener('click', () => {
     const letra = document.getElementById('letra').value.toLowerCase(); // Captura la letra en minúscula
